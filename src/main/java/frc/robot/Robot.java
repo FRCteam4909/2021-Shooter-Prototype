@@ -10,6 +10,9 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.operator.controllers.FlightStick;
+import frc.robot.subsystems.indexer.IndexerSubsystem;
+import frc.robot.subsystems.indexer.commands.SetSpeed;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
 import frc.robot.subsystems.shooter.ShooterSubsystemOLD;
 
@@ -25,8 +28,9 @@ public class Robot extends TimedRobot {
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
-  public ShooterSubsystem shooter;
-  public ShooterSubsystemOLD shooterOLD;
+  private ShooterSubsystem shooter;
+  private IndexerSubsystem indexer;
+  public static FlightStick operatorController;
 
   /**
    * This function is run when the robot is first started up and should be
@@ -34,13 +38,16 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    // shooter = new ShooterSubsystem();
-    shooterOLD = new ShooterSubsystemOLD();
-    // shooter = new ShooterSubsystem();
+    shooter = new ShooterSubsystem();
+    indexer = new IndexerSubsystem();
+    operatorController = new FlightStick(1, 0.01, 0.1);
 
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
+
+    operatorController.buttonHeld(FlightStick.One, new SetSpeed(indexer));
+
   }
 
   /**
@@ -94,6 +101,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopInit() {
+
   }
 
   /**
