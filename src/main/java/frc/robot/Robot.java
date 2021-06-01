@@ -7,14 +7,18 @@
 
 package frc.robot;
 
+import java.net.CookieHandler;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color;
 import frc.robot.operator.controllers.FlightStick;
 import frc.robot.subsystems.indexer.IndexerSubsystem;
 import frc.robot.subsystems.indexer.commands.SetSpeed;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
 import frc.robot.subsystems.shooter.ShooterSubsystemOLD;
+import frc.robot.subsystems.wheel.ColorSensor;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -30,6 +34,7 @@ public class Robot extends TimedRobot {
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   private ShooterSubsystem shooter;
   private IndexerSubsystem indexer;
+  private ColorSensor colorSensor;
   public static FlightStick operatorController;
 
   /**
@@ -38,15 +43,17 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    shooter = new ShooterSubsystem();
-    indexer = new IndexerSubsystem();
+    // shooter = new ShooterSubsystem();
+    // indexer = new IndexerSubsystem();
+    colorSensor = new ColorSensor();
+    
     operatorController = new FlightStick(1, 0.01, 0.1);
 
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
 
-    operatorController.buttonHeld(FlightStick.One, new SetSpeed(indexer));
+    // operatorController.buttonHeld(FlightStick.One, new SetSpeed(indexer));
 
   }
 
